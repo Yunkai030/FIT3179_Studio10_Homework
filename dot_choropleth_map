@@ -1,0 +1,109 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Yunkai030/FIT3179_Studio10_Homework/refs/heads/main/GlobalWeatherRepository_modified.csv"
+  },
+  "params": [
+    {
+      "name": "timeZoneParam",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": ["All", "Indian", "Africa", "Europe", "Asia","America","Pacific"],
+        "labels": ["All", "Indian", "Africa", "Europe", "Asia","America","Pacific"],
+        "name": "Time Zone:"
+      }
+    }
+  ],
+  "vconcat": [
+    {
+      "width": 1000,
+      "height": 800,
+      "title": "Top High Temperature Countries in the World",
+      "projection": {"type": "equalEarth", "rotate": [-150, 0, 0]},
+      "layer": [
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/Yunkai030/FIT3179_Studio10_Homework/refs/heads/main/ne_110m_admin_0_countries.json",
+            "format": {
+              "type": "topojson",
+              "feature": "ne_110m_admin_0_countries"
+            }
+          },
+          "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"}
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+            "format": {"type": "topojson", "feature": "oceans"}
+          },
+          "mark": {"type": "geoshape", "fill": "skyblue"}
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/Yunkai030/FIT3179_Studio10_Homework/refs/heads/main/ne_110m_graticules_30.json",
+            "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
+          },
+          "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+        },
+        {
+          "transform": [
+            {"filter": "datum.temperature_celsius >= 25"},
+            {
+              "filter": "timeZoneParam == 'All' || datum.timezone == timeZoneParam"
+            }
+          ],
+          "encoding": {
+            "longitude": {"field": "longitude", "type": "quantitative"},
+            "latitude": {"field": "latitude", "type": "quantitative"},
+            "color": {
+              "field": "temperature_celsius",
+              "type": "quantitative",
+              "title": "Temperature (°C)",
+              "scale": {
+                "type": "threshold",
+                "domain": [20, 25, 30, 35],
+                "range": ["#fdbe85", "#fd8d3c", "#e6550d", "#bd0026", "#7f0000"]
+              }
+            },
+            "tooltip": [
+              {"field": "timezone", "type": "nominal", "title": "Time Zone"},
+              {"field": "country", "type": "nominal", "title": "Country"},
+              {"field": "location_name", "type": "nominal", "title": "Location"}
+            ]
+          },
+          "layer": [
+            {"mark": {"type": "circle", "opacity": 0.4, "size": 15}},
+            {
+              "transform": [
+                {
+                  "window": [{"op": "rank", "as": "ranking"}],
+                  "sort": [{"field": "temperature_celsius", "order": "descending"}]
+                },
+                {"filter": "datum.ranking == 1"},
+                {
+                  "calculate": "datum['temperature_celsius']",
+                  "as": "text_annotation_raw"
+                },
+                {
+                  "calculate": "split(datum.text_annotation_raw, ';')",
+                  "as": "text_annotation"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "dx": -8,
+                "dy": -8,
+                "baseline": "middle",
+                "fontStyle": "italic"
+              },
+              "encoding": {"text": {"field": "text_annotation"}}
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "config": {"title": {"font": "sans-serif", "fontSize": 14}}
+}

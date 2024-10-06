@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+    <script src="bridge.js"></script>
+
+    <title>FIT3179 Homework 10 Graph</title>
+</head>
+
+<body>
+    <h1>Line Chart</h1>
+    <div id="Line_chart"></div>
+    <p>
+        The top line chart displays fluctuations in temperature (in Celsius) over a specific time period (from May 19 to
+        September 15), showing the high variance in daily temperatures, with temperatures ranging from around 5°C to over
+        40°C. </p>
+    <p>The bottom line chart tracks a more stable temperature trend over the same period, suggesting lower temperature
+            variance. The yellow line represents a less extreme range, possibly the lower or average temperature in the same time frame.</p> 
+   
+
+    <h1>Choropleth Map</h1>
+    <div id="Dot_choropleth_map"></div>
+    <p>
+        This world map highlights the top high-temperature countries, using a gradient color scale to indicate temperature ranges
+        (from around 20°C to 40°C). The countries with high temperatures are marked with red dots, and the map shows a global
+        distribution with a concentration of high temperatures in regions around the equator and certain hotspots in Africa, the
+        Middle East, and parts of Asia. The color bar to the right indicates the intensity of the temperature.
+    </p>
+</body>
+
+</html>
